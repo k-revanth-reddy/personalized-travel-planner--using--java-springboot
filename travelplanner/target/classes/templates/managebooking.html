@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wanderlux - Manage Bookings</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        /* Root Variables */
+        :root {
+            --primary: #2A3342;
+            --secondary: #FFB703;
+            --accent: #FF0266;
+            --background: #F8F9FA;
+            --text: #2A3342;
+            --gradient: linear-gradient(135deg, #2A3342 0%, #1A202C 100%);
+            --card-gradient: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.95) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            /* Adjusted to ensure space for the navbar */
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            width: 100%;
+            padding: 0.5rem 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-top: 0px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+        }
+
+        .table-container {
+            margin-bottom: 2rem;
+            background: var(--card-gradient);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .accept-btn, .reject-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .accept-btn:hover {
+            background-color: #45a049;
+        }
+
+        .reject-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .reject-btn:hover {
+            background-color: #e53935;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 1rem;
+        }
+
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">Wanderlux</div>
+            <div class="nav-links">
+                <a href="/hoteldashboard">Dashboard</a>
+                <a href="/rooms">Rooms</a>
+                <a href="/bookings" class="active">Manage Bookings</a>
+                <a href="#profile">Profile</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1 class="section-title">Manage Bookings</h1>
+
+        <!-- Table for Pending Bookings -->
+        <div class="table-container" data-aos="fade-up">
+            <h2>Pending Bookings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Room No</th>
+                        <th>Room Type</th>
+                        <th>Check-In Date</th>
+                        <th>Check-Out Date</th>
+                        <th>Guests</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through bookings list passed from the controller -->
+                    <tr th:each="booking : ${bookings}">
+                        <td th:text="${booking.roomNo}"></td>
+                        <td th:text="${booking.roomType}"></td>
+                        <td th:text="${booking.checkInDate}"></td>
+                        <td th:text="${booking.checkOutDate}"></td>
+                        <td th:text="${booking.noOfGuests}"></td>
+                        <td th:text="${booking.status}"></td>
+                        <td>
+                            <div class="btn-container">
+                                <!-- Accept Button -->
+                                <form th:action="@{/acceptBooking/{id}(id=${booking.id})}" method="post">
+                                    <button type="submit" class="accept-btn"><i class="fas fa-check"></i> Accept</button>
+                                </form>
+                                <!-- Reject Button -->
+                                <form th:action="@{/rejectBooking/{id}(id=${booking.id})}" method="post">
+                                    <button type="submit" class="reject-btn"><i class="fas fa-times"></i> Reject</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Redirect or Actions -->
+        <a href="/hoteldashboard" class="btn">Back to Dashboard</a>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+</html>

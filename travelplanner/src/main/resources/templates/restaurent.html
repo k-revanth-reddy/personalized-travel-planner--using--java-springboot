@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GourmetHub - Restaurant Owner Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #343a40;
+            --secondary: #FF5733;
+            --accent: #FFC107;
+            --background: #f1f1f1;
+            --text: #343a40;
+            --gradient: linear-gradient(135deg, #343a40 0%, #1c1c1c 100%);
+            --card-gradient: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.95) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+        }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            padding: 0.5rem 3rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 8rem 2rem 2rem;
+        }
+
+        .dashboard-header {
+            background: var(--card-gradient);
+            border-radius: 30px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .user-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 60px;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .menu-items,
+        .quick-actions {
+            background: white;
+            border-radius: 30px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .view-all {
+            font-size: 1rem;
+            color: var(--accent);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .menu-item-card {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: var(--background);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item-card:hover {
+            transform: translateX(10px);
+        }
+
+        .menu-item-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 15px;
+            object-fit: cover;
+        }
+
+        .menu-item-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .menu-item-meta {
+            display: flex;
+            gap: 2rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 15px;
+            background: var(--background);
+            color: var(--primary);
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateX(10px);
+        }
+
+        .action-btn i {
+            font-size: 1.2rem;
+        }
+
+        .add-item-form {
+            background: var(--card-gradient);
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            font-size: 1.1rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--primary);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--secondary);
+        }
+
+        .form-group button {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: var(--accent);
+        }
+
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .menu-item-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            color: #fff;
+            height: 40px;
+        }
+
+        .btn-edit {
+            background-color: #007bff;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <div class="logo">GourmetHub</div>
+            <div class="nav-links">
+                <a href="#dashboard">Dashboard</a>
+                <a href="#menu">Menu</a>
+                <a href="#orders">Orders</a>
+                <a th:href="@{/logout}">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <img src="https://via.placeholder.com/120" alt="Owner Avatar" class="user-avatar">
+            <div class="user-info">
+                <h1>Welcome, <span th:text="${loggedInOwner}"></span>!</h1>
+                <p>Manage your restaurant and menu with ease.</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-utensils"></i>
+                <h3>Menu Items</h3>
+                <p>25 Items</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-box"></i>
+                <h3>Orders Today</h3>
+                <p>15 Orders</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-star"></i>
+                <h3>Average Rating</h3>
+                <p>4.5 / 5</p>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="menu-items">
+                <div class="section-title">
+                    <h2>Menu Items</h2>
+                    <a href="#add-food-item" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <div class="menu">
+                    <div class="menu-item-card" th:each="item : ${menuItems}">
+                        <!-- Display Image -->
+                        <img th:src="${item.imageUrl}" alt="Food Image" class="menu-item-image">
+
+                        <!-- Display Information -->
+                        <div class="menu-item-info">
+                            <h3 th:text="${item.foodItemName}">Food Name</h3>
+                            <div class="menu-item-meta">
+                                <!-- Display Price -->
+                                <span th:text="${item.cost}">$0.00</span>
+                                <!-- Display Food Type -->
+                                <span th:text="${item.foodType}">Food Type</span>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="menu-item-actions">
+                            <!-- Edit Button -->
+                            <a th:href="@{/edit/{id}(id=${item.id})}" class="btn btn-edit">Edit</a>
+
+                            <!-- Delete Button -->
+                            <form th:action="@{/delete/{id}(id=${item.id})}" method="post" class="delete-form">
+                                <button type="submit" class="btn btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quick-actions" data-aos="fade-up">
+                <div class="section-title">
+                    <h2>Quick Actions</h2>
+                </div>
+
+                <a th:href="@{/addfooditem}">
+                    <button class="action-btn">
+                        <i class="fas fa-plus"></i>
+                        Add New Item
+                    </button>
+                </a>
+
+                <button class="action-btn">
+                    <i class="fas fa-cogs"></i>
+                    Account Settings
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true
+        });
+    </script>
+</body>
+
+</html>
