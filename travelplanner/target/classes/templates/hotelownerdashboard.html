@@ -274,7 +274,7 @@
             </div>
         </div>
 
-        <div class="stats-grid" data-aos="fade-up">
+        <!-- <div class="stats-grid" data-aos="fade-up">
             <div class="stat-card">
                 <i class="fas fa-bed"></i>
                 <h3>20</h3>
@@ -290,16 +290,16 @@
                 <h3>4.8</h3>
                 <p>Average Rating</p>
             </div>
-        </div>
+        </div> -->
 
         <div class="dashboard-grid">
             <div class="upcoming-bookings" data-aos="fade-up">
                 <div class="section-title">
                     <h2>Upcoming Bookings</h2>
-                    <a href="#bookings" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+                    <a th:href="@{/ownerbookings}" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
                 </div>
 
-                <div class="room-card">
+                <!-- <div class="room-card">
                     <img src="/api/placeholder/100/100" alt="Room 101" class="room-image">
                     <div class="room-info">
                         <h3>Room 101 - Ocean View</h3>
@@ -308,7 +308,7 @@
                             <span><i class="fas fa-users"></i> 2 Guests</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
 
             <div class="quick-actions" data-aos="fade-up">
@@ -321,10 +321,10 @@
                     Add New Room
                 </button></a>
 
-                <button class="action-btn">
+                <a th:href="@{/ownerbookings}"><button class="action-btn">
                     <i class="fas fa-ticket-alt"></i>
                     View Bookings
-                </button>
+                </button></a>
                 
                 <button class="action-btn">
                     <i class="fas fa-cogs"></i>
